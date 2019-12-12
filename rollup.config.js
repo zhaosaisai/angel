@@ -21,7 +21,7 @@ const tsPlugin = ts({
 
 const defaultOutputs = ['umd', 'esm', 'cjs']
 
-const createOutputs = (ouputs) => {
+const createOutputs = (outputs) => {
   const baseOutputs = Object.values(outputs)
   return isProduction
     ? baseOutputs.concat(simpleClone(baseOutputs).map(output => {

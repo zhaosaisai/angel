@@ -42,12 +42,13 @@ const outputs = {
   },
   'umd': {
     file: resolve('dist/angel.umd.js'),
-    format: 'umd'
+    format: 'umd',
+    name: '__ANGEL__'
   }
 }
 
 module.exports = {
-  input: resolve('packages/index.ts'),
+  input: resolve('lib/index.ts'),
   output: createOutputs(outputs),
   plugins: [
     tsPlugin,

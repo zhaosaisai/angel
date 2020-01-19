@@ -6,6 +6,6 @@ declare global {
   }
 }
 
-export default function getPerformance() {
+export default function getPerformance(): Performance {
   return window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance;
 }

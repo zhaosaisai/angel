@@ -33,6 +33,6 @@
     "yorkie": "^2.0.0"
   },
   "gitHooks": {
-    "commit-msg": "node verify-commit"
+    "commit-msg": "node scripts/verify-commit"
   }
 }

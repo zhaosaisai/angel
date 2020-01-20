@@ -11,3 +11,16 @@ export enum ACTION_TYPE {
   MANUAL = 1, // 手动上报
   UNKNOWN = 'unknown'
 }
+
+
+export enum ERROR_TYPE {
+  JS_ERROR = 'js_error', // JavaScript运行时的错误
+  RESOURCE_ERROR = 'resource_error', // 静态资源加载错误
+  UNHANDLEDREJECTION = 'unhandledrejection', // Promise未捕获的错误
+  AJAX_ERROR = 'ajax_error', // ajax请求错误
+  FETCH_ERROR = 'fetch_error' // fetch请求错误
+}
+
+export type UNKNOWN = 'unknown'
+
+export type UNION_TYPE = REPORT_TYPE | ACTION_TYPE | ERROR_TYPE | UNKNOWN

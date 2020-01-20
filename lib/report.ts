@@ -1,6 +1,7 @@
 import { getLanguage } from './util/index'
-import { REPORT_TYPE, ACTION_TYPE } from './type'
+import { UNION_TYPE, ACTION_TYPE } from './type'
 
+const UNKNOWN = 'unknown'
 interface CommonMetric {
   app: string;
   href: string;
@@ -14,7 +15,7 @@ interface CommonMetric {
 
 }
 
-function report(data: any, reportType: REPORT_TYPE = REPORT_TYPE.UNKNOWN, actionType:ACTION_TYPE = ACTION_TYPE.UNKNOWN) {
+function report(data: any, reportType: UNION_TYPE = UNKNOWN, actionType: ACTION_TYPE = ACTION_TYPE.AUTO) {
   const commonMetric: CommonMetric = {
     app: '',
     href: location.href,

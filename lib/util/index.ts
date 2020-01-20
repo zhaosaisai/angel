@@ -23,3 +23,8 @@ export const getPerformanceMetric = (endTag: string, startTag: string): number =
   const timing = performance.timing
   return setDefault0(timing[endTag], timing[startTag])
 }
+
+export const isScriptError = (message: string): boolean => {
+  const SCRIPT_ERROR = 'script error'
+  return message.toLocaleLowerCase().indexOf(SCRIPT_ERROR) > -1
+}

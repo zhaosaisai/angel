@@ -11,6 +11,7 @@ interface CommonMetric {
   screenHeight: number;
   colorDepth: number;
   referrer: string;
+
 }
 
 function report(data: any, reportType: REPORT_TYPE = REPORT_TYPE.UNKNOWN, actionType:ACTION_TYPE = ACTION_TYPE.UNKNOWN) {

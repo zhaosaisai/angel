@@ -10,12 +10,16 @@ export const getLanguage = (): string => {
   return Array.isArray(languages) ? languages[0] : languages
 }
 
-export const setDefault0 = (end: number, start: number): number | null => {
-  return (end > 0 && start > 0) ? (end - start) : null
+export const setDefault0 = (end: number, start: number): number => {
+  return (end > 0 && start > 0) ? (end - start) : 0
 }
 
-export const getPerformanceMetric = (endTag: string, startTag: string): number | null => {
+export const getPerformanceMetric = (endTag: string, startTag: string): number => {
   const performance = getPerformance() as any
+  if (!performance) {
+    return 0
+  }
 
-  return setDefault0(performance[endTag], performance[startTag])
+  const timing = performance.timing
+  return setDefault0(timing[endTag], timing[startTag])
 }

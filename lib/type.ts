@@ -21,6 +21,13 @@ export enum ERROR_TYPE {
   FETCH_ERROR = 'fetch_error' // fetch请求错误
 }
 
+export enum NETWORK_ERROR {
+  REQUEST_ERROR = 'request_error', // 请求出错
+  TIMEOUT = 'timout', // 超时
+  ERROR = 'network_error', // 网络出错
+  ABORT = 'abort', // 用户取消
+}
+
 export type UNKNOWN = 'unknown'
 
 export type UNION_TYPE = REPORT_TYPE | ACTION_TYPE | ERROR_TYPE | UNKNOWN

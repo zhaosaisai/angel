@@ -50,4 +50,6 @@ export const getStaticAttrs = (target: any) => {
   return {}
 }
 
-export const isError = (error: any) => error instanceof Error;
+export const isError = (error: any): boolean => error instanceof Error;
+
+export const validateStatus = (status: number): boolean => status >= 200 && status < 300

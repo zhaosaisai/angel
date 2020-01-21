@@ -1,15 +1,15 @@
 import formatError from './util/format-error'
 import report from './report'
 import { ERROR_TYPE } from './type'
-import { getStaticAttrs } from './util/index'
+import { getStaticAttrs, isError } from './util/index'
 
 function monitorError() {
   // JavaScript runtime error
   window.onerror = function(...args) {
     const [ message, scriptSrc, line, column, error ] = args
-    const _e = formatError(error)
     const e: any = {}
-    if (_e) {
+    if (isError(error)) {
+      const _e = formatError(error)
       e.message = _e.message || message
       e.url = _e.scriptSrc || scriptSrc
       e.row = _e.row || line
@@ -23,6 +23,9 @@ function monitorError() {
       e.col = column
       e.stack = 'unknown stack'
       e.name = 'unknown error type'
+      if (error) {
+        e.error = JSON.stringify(error)
+      }
     }
     report(e, ERROR_TYPE.JS_ERROR);
   }
@@ -49,16 +52,12 @@ function monitorError() {
       e.message = String(reason) || ''
     } else if (reason instanceof Error) {
       const _e = formatError(reason)
-      if (_e) {
-        e.message = _e.message
-        e.url = _e.scriptSrc
-        e.row = _e.row
-        e.col = _e.col
-        e.stack = _e.stack
-        e.name = _e.name
-      } else {
-        e.message = 'unknown error ' + JSON.stringify(reason)
-      }
+      e.message = _e.message
+      e.url = _e.scriptSrc
+      e.row = _e.row
+      e.col = _e.col
+      e.stack = _e.stack
+      e.name = _e.name
     } else {
       e.message = JSON.stringify(reason)
     }

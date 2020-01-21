@@ -49,3 +49,5 @@ export const getStaticAttrs = (target: any) => {
   }
   return {}
 }
+
+export const isError = (error: any) => error instanceof Error;

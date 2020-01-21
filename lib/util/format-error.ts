@@ -1,5 +1,15 @@
+import { isError } from './index'
+declare global {
+  interface Error {
+    column?: number;
+    columnNumber?: number;
+    line?: number;
+    lineNumber?: number;
+  }
+}
+
 export default function formatError(error: any) {
-  if (!error || typeof error !== 'object') return null
+  if (!isError(error)) return error
 
   const col = error.column || error.columnNumber;
   const row = error.line || error.lineNumber;

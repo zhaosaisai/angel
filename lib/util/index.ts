@@ -28,3 +28,24 @@ export const isScriptError = (message: string): boolean => {
   const SCRIPT_ERROR = 'script error'
   return message.toLocaleLowerCase().indexOf(SCRIPT_ERROR) > -1
 }
+
+export const getStaticAttrs = (target: any) => {
+  const name = target.localName
+  switch(name) {
+    case 'script':
+      return {
+        url: target.src,
+        async: target.async,
+        defer: target.defer
+      }
+    case 'link':
+      return {
+        url: target.href
+      }
+    case 'img':
+      return {
+        url: target.src
+      }
+  }
+  return {}
+}

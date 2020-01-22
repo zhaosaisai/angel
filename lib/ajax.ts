@@ -63,7 +63,7 @@ function monitorAjax() {
           })
           report(e, REPORT_TYPE.INTERFACE)
         } else if (duration > 300) {
-          // 慢接口
+          // 慢接口 + 响应体大小
           Object.assign(e, {
             duration,
             url: responseURL,

@@ -1,10 +1,22 @@
+import report from './report'
 import { validateStatus } from './util/index'
-import { NETWORK_ERROR } from './type'
+import { NETWORK_ERROR, REPORT_TYPE, ERROR_TYPE } from './type'
 
 declare global {
   interface XMLHttpRequest {
     _hooks: any
   }
+}
+
+function reportAjaxError(event: any, subtype: string) {
+  const { loaded, total, lengthComputable } = event
+  report(Object.assign({
+    type: ERROR_TYPE.AJAX_ERROR,
+    subtype,
+    loaded,
+    total,
+    lengthComputable,
+  }), REPORT_TYPE.INTERFACE)
 }
 
 function monitorAjax() {
@@ -20,7 +32,6 @@ function monitorAjax() {
   }
 
   XMLHttpRequest.prototype.send = function(...args) {
-    const e: any = {}
     const startTime = new Date().getTime()
 
     const { onerror, ontimeout, onabort, onreadystatechange } = this
@@ -38,14 +49,29 @@ function monitorAjax() {
       // With one exception: request that using file: protocol, most browsers
       // will return status as 0 even though it's a successful request
       if (readyState === DONE && status !== 0 && (responseURL && responseURL.match(/^https?:\/\//))) {
+        // TODO: set as a global var
+        const e: any = Object.assign({}, this._hooks)
+        const duration = new Date().getTime() - startTime
         if (!validateStatus(status)) {
           Object.assign(e, {
-            duration: new Date().getTime() - startTime,
+            duration,
             url: responseURL,
             status,
             statusText,
-            errorType: NETWORK_ERROR.REQUEST_ERROR
-          }, this._hooks)
+            type: ERROR_TYPE.AJAX_ERROR,
+            subtype: NETWORK_ERROR.REQUEST_ERROR
+          })
+          report(e, REPORT_TYPE.INTERFACE)
+        } else if (duration > 300) {
+          // 慢接口
+          Object.assign(e, {
+            duration,
+            url: responseURL,
+            status,
+            type: ERROR_TYPE.AJAX_ERROR,
+            subtype: NETWORK_ERROR.SLOW_API
+          })
+          report(e, REPORT_TYPE.INTERFACE)
         }
       }
 
@@ -54,7 +80,27 @@ function monitorAjax() {
       }
     }
 
+    this.onerror = function(event) {
+      reportAjaxError(event, NETWORK_ERROR.ERROR)
+      if (typeof onerror === 'function') {
+        onerror.call(this, event)
+      }
+    }
 
+    this.onabort = function(event) {
+      reportAjaxError(event, NETWORK_ERROR.ABORT)
+      if (typeof onabort === 'function') {
+        onabort.call(this, event)
+      }
+    }
+
+    this.ontimeout = function(event) {
+      reportAjaxError(event, NETWORK_ERROR.TIMEOUT)
+
+      if (typeof ontimeout === 'function') {
+        ontimeout.call(this, event)
+      }
+    }
     return _xhrRealSend.apply(this, args)
   }
 }

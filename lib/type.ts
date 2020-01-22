@@ -26,6 +26,7 @@ export enum NETWORK_ERROR {
   TIMEOUT = 'timout', // 超时
   ERROR = 'network_error', // 网络出错
   ABORT = 'abort', // 用户取消
+  SLOW_API = 'slow_api' // 慢接口
 }
 
 export type UNKNOWN = 'unknown'

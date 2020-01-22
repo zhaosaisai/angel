@@ -1,7 +1,7 @@
 import { getPerformanceMetric } from './util/index'
 import getPerformance from './util/get-performance'
 import report from './report'
-import { REPORT_TYPE, ACTION_TYPE } from './type'
+import { REPORT_TYPE } from './type'
 
 declare namespace monitorPerformance {
   export let installed: boolean
@@ -33,10 +33,10 @@ function monitorPerformance() {
   }
 
   if (performance && performance.timing && performance.timing.loadEventEnd) {
-    report(getMetrics(), REPORT_TYPE.PERFORMANCE, ACTION_TYPE.AUTO)
+    report(getMetrics(), REPORT_TYPE.PERFORMANCE)
   } else {
     window.addEventListener('load', () => {
-      report(getMetrics(), REPORT_TYPE.PERFORMANCE, ACTION_TYPE.AUTO)
+      report(getMetrics(), REPORT_TYPE.PERFORMANCE)
     })
   }
 }

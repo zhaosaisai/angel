@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-function Monitor(config: any) {
+function Monitor(this: any, config: any) {
   this.config = config
 }
 
